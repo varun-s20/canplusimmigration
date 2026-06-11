@@ -1,0 +1,87 @@
+<style>
+  .mh{font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+  .grotesk{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;letter-spacing:-.03em}
+  .rule{height:1px;background:currentColor;opacity:.18}
+  .tag{font-size:10px;letter-spacing:.22em;text-transform:uppercase}
+  .swatch{width:26px;height:13px;border-radius:2px;display:inline-block}
+</style>
+<h2>Three fresh art directions</h2>
+<p class="subtitle">Same palette (navy #02152E · maple red #D11314 · gold #9A7B34 · ivory #FBFAF7) and content — completely different visual language from the current bento/scribble look. Click one.</p>
+
+<div class="cards">
+
+  <!-- A -->
+  <div class="card" data-choice="quiet-authority" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0">
+      <div class="mh" style="background:#FBFAF7;color:#02152E;height:230px;padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="display:flex;justify-content:space-between;align-items:center" class="tag">
+          <span>CANPLUS IMMIGRATION</span><span style="color:#9a7b34">EST. CANADA</span>
+        </div>
+        <div class="rule" style="color:#02152E"></div>
+        <div>
+          <div class="grotesk" style="font-size:40px;line-height:.95">Your Canadian<br>future, guided.</div>
+        </div>
+        <div class="rule" style="color:#02152E"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end" class="tag">
+          <span style="max-width:18ch;opacity:.6;text-transform:none;letter-spacing:0;font-size:11px">Licensed RCIC consultants · work · study · PR · citizenship</span>
+          <span style="border-bottom:2px solid #D11314;padding-bottom:2px">FREE ASSESSMENT →</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A · Quiet Authority (editorial grotesk)</h3>
+      <p>Vast whitespace, a big modern <b>sans/grotesk</b> headline (no serif), strict baseline grid, full-width hairline rules, oversized numerals, red only as a thin underline. Reads like a private bank or top-tier law firm. Calm, confident, type-led. Light.</p>
+      <div style="margin-top:8px"><span class="swatch" style="background:#FBFAF7;outline:1px solid #ddd"></span><span class="swatch" style="background:#02152E"></span><span class="swatch" style="background:#D11314"></span><span class="swatch" style="background:#9a7b34"></span></div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="card" data-choice="cinematic-dark" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0">
+      <div class="mh" style="position:relative;height:230px;background:radial-gradient(120% 90% at 70% 10%,#0c2347,#02152E);color:#fff;padding:22px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden">
+        <div style="position:absolute;right:-30px;top:-30px;width:180px;height:180px;border:1px solid rgba(154,123,52,.4);border-radius:50%"></div>
+        <div style="position:absolute;right:10px;top:10px;width:120px;height:120px;border:1px solid rgba(154,123,52,.25);border-radius:50%"></div>
+        <div class="tag" style="color:#b89a55">CANPLUS IMMIGRATION</div>
+        <div>
+          <div style="font-family:Georgia,serif;font-size:38px;line-height:1.02">Your Canadian future,<br><span style="font-style:italic;color:#cbb06a">expertly</span> guided.</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="background:#D11314;color:#fff;font-size:11px;padding:8px 14px;border-radius:2px">Free assessment</span>
+          <span style="border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;padding:8px 14px;border-radius:2px">Services</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B · Cinematic Dark (immersive navy)</h3>
+      <p>Dark navy is the <b>default canvas</b>, full-bleed imagery, large refined serif headlines, concentric gold rings/linework, glassy panels, scroll-driven cinematic reveals. Dramatic, luxury, emotional — the boldest departure. Pairs powerfully with the loading reveal.</p>
+      <div style="margin-top:8px"><span class="swatch" style="background:#02152E"></span><span class="swatch" style="background:#0c2347"></span><span class="swatch" style="background:#D11314"></span><span class="swatch" style="background:#cbb06a"></span></div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="card" data-choice="swiss-precision" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0">
+      <div class="mh" style="height:230px;background:#FBFAF7;color:#02152E;padding:0;display:grid;grid-template-columns:34px 1fr 1fr;position:relative">
+        <div style="border-right:1px solid rgba(2,21,46,.12);display:flex;align-items:flex-start;justify-content:center;padding-top:14px;font-size:10px;letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg);opacity:.6">01 / HERO</div>
+        <div style="border-right:1px solid rgba(2,21,46,.12);padding:18px 16px;display:flex;flex-direction:column;justify-content:space-between">
+          <div class="tag" style="color:#D11314">● CANPLUS IMMIGRATION</div>
+          <div style="font-family:'Helvetica Neue',Arial;font-weight:700;letter-spacing:-.02em;font-size:30px;line-height:1">Your Canadian future, guided.</div>
+          <div style="font-size:10px;font-variant:tabular-nums;letter-spacing:.04em;opacity:.6">EST. 2013 — 8 STREAMS — RCIC / CICC</div>
+        </div>
+        <div style="padding:18px 16px;display:flex;flex-direction:column;justify-content:space-between;font-size:11px">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(2,21,46,.12);padding-bottom:6px"><span>01 Work permits</span><span>→</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(2,21,46,.12);padding:6px 0"><span>02 Study permits</span><span>→</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(2,21,46,.12);padding:6px 0"><span>03 Permanent residence</span><span>→</span></div>
+          <div style="background:#02152E;color:#fff;text-align:center;padding:8px;letter-spacing:.1em">FREE ASSESSMENT</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C · Architectural Swiss (precision grid)</h3>
+      <p>A <b>visible structural grid</b> with column rules, index numbering (01/02/03), tabular numerals, grotesk type, red as a single surgical accent dot/line. Architectural, precise, data-confident — like a meticulously organised dossier. Distinctly editorial without any cards or scribbles.</p>
+      <div style="margin-top:8px"><span class="swatch" style="background:#FBFAF7;outline:1px solid #ddd"></span><span class="swatch" style="background:#02152E"></span><span class="swatch" style="background:#D11314"></span><span class="swatch" style="background:#9a7b34"></span></div>
+    </div>
+  </div>
+
+</div>
+<p class="subtitle" style="margin-top:16px">Which direction feels right? You can also say "a mix of B and C" or tell me to push one further.</p>

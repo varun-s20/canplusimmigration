@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+:root {
+  --nav-h: 88px;
+}
+@media (min-width: 768px) {
+  :root { --nav-h: 100px; }
+}
+
+@theme {
+  /* CanPlus Immigration — palette drawn from the logo's deepest maple tones:
+     a deep Canadian crimson, near-pure black ink, clean white field. No gold,
+     no navy — a confident crimson/black/white system rooted in the brand mark. */
+  --color-accent: #b11226;          /* deep maple crimson — primary brand field */
+  --color-accent-hover: #8f0e1f;    /* darker crimson on hover */
+  --color-accent-strong: #c41429;   /* live crimson — links, marks, active bars */
+  --color-accent-deep: #7c0a12;     /* garnet shadow tone from the leaf, for depth */
+  --color-accent-ink: #ffffff;      /* pure white on crimson fields */
+
+  /* Semantic meter tones (eligibility score tiers) — not brand colors. */
+  --color-gold: #b7791f;            /* amber — "moderate" tier */
+  --color-gold-soft: #c8922e;       /* soft amber — "competitive" tier */
+
+  --color-ink: #121110;             /* near-pure black, matches the wordmark */
+  --color-ink-soft: #2c2a28;
+  --color-ink-muted: #6b6862;
+  --color-surface-dark: #121110;    /* dark sections use the logo's true black */
+  --color-surface-dark-2: #211f1d;
+  --color-bg: #fcfcfb;              /* clean near-white, matches the logo field */
+  --color-card: #ffffff;
+  --color-line: #e9e8e4;
+  --color-line-dark: #322f2c;
+
+  /* Flat editorial: minimal radii, the system relies on rules + fields. */
+  --radius-card: 4px;
+  --radius-tile: 4px;
+  --radius-pill: 9999px;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", monospace;
+
+  --shadow-card: 0 1px 0 rgba(18, 17, 16, 0.04);
+  --shadow-tile: 0 1px 0 rgba(18, 17, 16, 0.05), 0 18px 40px -32px rgba(18, 17, 16, 0.18);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    /* Offset anchor scroll so the floating nav doesn't cover targets */
+    scroll-padding-top: var(--nav-h);
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    color: var(--color-ink);
+  }
+
+  /* Hide native focus ring on mouse, keep for keyboard */
+  :focus:not(:focus-visible) { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  .container-page {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+    max-width: 80rem;
+  }
+  @media (min-width: 768px) { .container-page { padding-inline: 2rem; } }
+  @media (min-width: 1280px) { .container-page { padding-inline: 3rem; } }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Hairline borders (flat, editorial) */
+  .hairline { box-shadow: inset 0 0 0 1px var(--color-line); }
+  .hairline-dark { box-shadow: inset 0 0 0 1px var(--color-line-dark); }
+
+  /* Mono eyebrow / label — the signature editorial marker (replaces pills). */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    font-weight: 500;
+  }
+  .eyebrow-ink { color: var(--color-ink-muted); }
+  .eyebrow-accent { color: var(--color-accent-strong); }
+
+  /* Full-width hairline rule between sections. */
+  .rule { height: 1px; width: 100%; background: var(--color-line); }
+  .rule-dark { height: 1px; width: 100%; background: var(--color-line-dark); }
+
+  /* Mono index number (01 / 02 …). */
+  .index-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-muted);
+  }
+
+  /* Clean maple underline behind an emphasised word (replaces the scribble). */
+  .scribble-underline {
+    box-shadow: inset 0 -0.1em 0 0 var(--color-accent-strong);
+    padding-bottom: 0.02em;
+  }
+
+  /* Fluid display type — one scale used by every page hero / section head,
+     so headings stay consistent and scale smoothly across breakpoints. */
+  .display-hero {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    font-size: clamp(2.5rem, 1.45rem + 5.2vw, 5rem);   /* 40px → 80px */
+  }
+  .display-section {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+    font-size: clamp(1.875rem, 1.2rem + 3.4vw, 3.5rem); /* 30px → 56px */
+  }
+  .lede {
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem); /* 17px → 20px */
+    line-height: 1.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
