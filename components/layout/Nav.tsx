@@ -22,9 +22,36 @@ export function Nav() {
   const reduced = useReducedMotion();
   const pathname = usePathname();
 
+  // Over a full-bleed dark hero (the home video), the bar goes transparent with
+  // light text so the footage reads edge to edge; once scrolled past it, the bar
+  // returns to its solid ivory style. Default solid on every route except a page
+  // that actually has a `[data-hero]`, so light pages never get white-on-white.
+  const [solid, setSolid] = useState(pathname !== "/");
+
   // Close on route change.
   useEffect(() => {
     setOpen(false);
+  }, [pathname]);
+
+  // Watch the hero: transparent while it sits under the bar, solid once it
+  // scrolls above the bar line (rootMargin pulls the trigger to the nav height).
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>("[data-hero]");
+    if (!hero) {
+      setSolid(true);
+      return;
+    }
+    const navH =
+      parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue("--nav-h"),
+        10,
+      ) || 88;
+    const io = new IntersectionObserver(
+      ([entry]) => setSolid(!entry.isIntersecting),
+      { rootMargin: `-${navH}px 0px 0px 0px`, threshold: 0 },
+    );
+    io.observe(hero);
+    return () => io.disconnect();
   }, [pathname]);
 
   // Lock body scroll while open.
@@ -51,14 +78,22 @@ export function Nav() {
   return (
     <>
       <header
-        className="sticky top-0 z-40 w-full border-b border-line bg-bg/85 backdrop-blur-md"
+        className={cn(
+          "sticky top-0 z-40 w-full border-b transition-colors duration-300 [transition-timing-function:var(--ease-out)]",
+          solid
+            ? "border-line bg-bg/85 backdrop-blur-md"
+            : "border-transparent bg-transparent",
+        )}
         style={{ height: "var(--nav-h)" }}
       >
         <div className="container-page flex h-full items-center justify-between gap-6">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 text-ink"
+            className={cn(
+              "flex items-center gap-2.5 transition-colors",
+              solid ? "text-ink" : "text-accent-ink",
+            )}
             aria-label="CanPlus Immigration home"
           >
             <Logo className="h-9 w-auto md:h-10" />
@@ -79,17 +114,27 @@ export function Nav() {
                       href={l.href}
                       aria-current={isActive ? "page" : undefined}
                       className={cn(
-                        "relative inline-flex items-center font-sans text-[14px] tracking-tight transition-colors",
-                        isActive ? "text-ink" : "text-ink-muted hover:text-ink",
+                        "group/nav relative inline-flex items-center font-sans text-[14px] tracking-tight transition-colors",
+                        solid
+                          ? isActive
+                            ? "text-ink"
+                            : "text-ink-muted hover:text-ink"
+                          : isActive
+                            ? "text-accent-ink"
+                            : "text-accent-ink/75 hover:text-accent-ink",
                       )}
                     >
                       {l.label}
-                      {isActive && (
-                        <span
-                          aria-hidden
-                          className="absolute -bottom-2 left-0 h-[2px] w-full bg-accent-strong"
-                        />
-                      )}
+                      {/* maple underbar: solid when active, draws in from the left on hover */}
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "absolute -bottom-2 left-0 h-[2px] w-full origin-left bg-accent-strong transition-transform duration-300 [transition-timing-function:var(--ease-out)]",
+                          isActive
+                            ? "scale-x-100"
+                            : "scale-x-0 group-hover/nav:scale-x-100",
+                        )}
+                      />
                     </Link>
                   </li>
                 );
@@ -101,7 +146,12 @@ export function Nav() {
           <div className="flex items-center gap-3 md:gap-5">
             <Link
               href="/contact"
-              className="hidden font-sans text-[14px] text-ink-muted transition-colors hover:text-ink sm:inline-flex"
+              className={cn(
+                "link-underline hidden font-sans text-[14px] transition-colors sm:inline-flex",
+                solid
+                  ? "text-ink-muted hover:text-ink"
+                  : "text-accent-ink/80 hover:text-accent-ink",
+              )}
             >
               Contact
             </Link>
@@ -114,7 +164,12 @@ export function Nav() {
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpen(true)}
-              className="grid h-11 w-11 place-items-center rounded-[3px] text-ink transition-colors hover:bg-ink/[0.06] md:hidden"
+              className={cn(
+                "grid h-11 w-11 place-items-center rounded-[3px] transition-colors md:hidden",
+                solid
+                  ? "text-ink hover:bg-ink/[0.06]"
+                  : "text-accent-ink hover:bg-accent-ink/10",
+              )}
             >
               <Menu className="h-4 w-4" />
             </button>

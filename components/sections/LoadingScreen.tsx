@@ -8,7 +8,7 @@ import styles from "./LoadingScreen.module.css";
 const WORD = "CanPlus Immigration";
 const BASE_DELAY = 1850; // ms — letters start as the mark slides left
 const STEP = 34; // ms — per-letter stagger
-const GAP = 36; // px — space between mark and wordmark
+const GAP = 26; // px — space between mark and wordmark
 
 // The reveal finishes when the underline draw ends (~3660ms). Hold briefly so
 // the finished lockup is readable, then fade the overlay out.
@@ -17,6 +17,15 @@ const FADE = 600;
 
 // Only play the intro once per browser session — subsequent loads skip it.
 const SESSION_KEY = "canplus:intro-seen";
+
+// Tell above-the-fold entrances (the hero) that the curtain is clearing, so
+// they rise into view instead of animating underneath the overlay.
+function signalIntroDone() {
+  if (typeof document === "undefined") return;
+  if (document.documentElement.dataset.intro === "done") return;
+  document.documentElement.dataset.intro = "done";
+  window.dispatchEvent(new Event("intro:done"));
+}
 
 /**
  * Site loading screen — a cinematic maple-leaf + wordmark reveal for CanPlus
@@ -40,6 +49,7 @@ export function LoadingScreen() {
     }
     if (seen) {
       setGone(true);
+      signalIntroDone();
       return;
     }
 
@@ -50,10 +60,19 @@ export function LoadingScreen() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Position the stage so the scaled 16:9 lockup fits any viewport, exactly
-    // like the reference.
+    // Scale the lockup as a single unit to fit any viewport, based on the
+    // ACTUAL content bounds (not a fixed 16:9 box) so it reads large on phones
+    // and never upscales past its native size on desktop. The red field is a
+    // separate full-viewport layer, so scaling here can never create a seam.
     const fit = () => {
-      const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      const lockupW = mark.offsetWidth + GAP + word.offsetWidth;
+      const lockupH = 230; // px: mark top → underline bottom, padded (smaller lockup)
+      const margin = 0.88; // breathing room around the lockup
+      const s = Math.min(
+        (window.innerWidth * margin) / lockupW,
+        (window.innerHeight * margin) / lockupH,
+        1,
+      );
       stage.style.transform = `translate(-50%, -50%) scale(${s})`;
     };
 
@@ -86,6 +105,7 @@ export function LoadingScreen() {
     if (reduced) {
       release();
       setGone(true);
+      signalIntroDone();
       return;
     }
 
@@ -93,7 +113,10 @@ export function LoadingScreen() {
       measure();
       fit();
       stage.classList.add(styles.run);
-      fadeTimer = setTimeout(() => setFading(true), HOLD);
+      fadeTimer = setTimeout(() => {
+        setFading(true);
+        signalIntroDone(); // hero rises as the overlay fades out
+      }, HOLD);
       goneTimer = setTimeout(() => {
         setGone(true);
         release();
@@ -135,9 +158,10 @@ export function LoadingScreen() {
 
   return (
     <div className={cn(styles.overlay, fading && styles.fadeOut)} aria-hidden>
-      <div ref={stageRef} className={styles.stage}>
-        <div className={styles.glow} />
+      {/* full-viewport grain over the continuous red field */}
+      <div className={styles.grain} />
 
+      <div ref={stageRef} className={styles.stage}>
         <div ref={markRef} className={styles.mark}>
           <Logo className={styles.logo} />
           <div className={styles.glint} />
@@ -155,8 +179,6 @@ export function LoadingScreen() {
         <div className={styles.underline}>
           <div className={styles.underlineFill} />
         </div>
-
-        <div className={styles.grain} />
       </div>
     </div>
   );

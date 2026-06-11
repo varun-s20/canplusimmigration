@@ -1,8 +1,9 @@
 import { HeroBento } from "@/components/sections/HeroBento";
-import { LoopDiagram } from "@/components/sections/LoopDiagram";
-import { EligibilityEstimator } from "@/components/sections/EligibilityEstimator";
-import { ServicesFeaturesScene } from "@/components/sections/ServicesFeaturesScene";
+import { ProofBand } from "@/components/sections/ProofBand";
+import { ServicesShowcase } from "@/components/sections/ServicesShowcase";
+import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
 import { Playbooks } from "@/components/sections/Playbooks";
+import { EligibilitySection } from "@/components/sections/EligibilitySection";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { CanadaBand } from "@/components/sections/CanadaBand";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -19,10 +20,11 @@ export default function HomePage() {
     <>
       <SmoothScroll />
       <HeroBento />
-      <ServicesFeaturesScene />
+      <ProofBand />
+      <ServicesShowcase />
+      <ProcessTimeline />
       <Playbooks />
-      <LoopDiagram />
-      <EligibilityEstimator />
+      <EligibilitySection />
       <Testimonials />
       <CanadaBand />
       <FinalCTA />

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import NumberFlow from "@number-flow/react";
-import { useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/Button";
 import { estimateCRS, type CRSInput, type CRSResult } from "@/lib/crs";
 import { cn } from "@/lib/cn";
@@ -109,6 +109,7 @@ function Segmented<T extends string | number>({
   onChange: (value: T) => void;
   name: string;
 }) {
+  const reduced = useReducedMotion();
   return (
     <div
       role="radiogroup"
@@ -125,13 +126,24 @@ function Segmented<T extends string | number>({
             aria-checked={active}
             onClick={() => onChange(opt.value)}
             className={cn(
-              "flex-1 px-3.5 py-2.5 text-[13px] font-medium transition-colors duration-200",
+              "relative flex-1 px-3.5 py-2.5 text-[13px] font-medium transition-colors duration-200",
               active
-                ? "bg-accent text-accent-ink"
+                ? "text-accent-ink"
                 : "bg-card text-ink-muted hover:bg-bg hover:text-ink",
             )}
           >
-            {opt.label}
+            {active &&
+              (reduced ? (
+                <span aria-hidden className="absolute inset-0 bg-accent" />
+              ) : (
+                <motion.span
+                  aria-hidden
+                  layoutId={`seg-${name}`}
+                  className="absolute inset-0 bg-accent"
+                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                />
+              ))}
+            <span className="relative z-10">{opt.label}</span>
           </button>
         );
       })}

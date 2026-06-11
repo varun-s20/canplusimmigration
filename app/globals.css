@@ -2,34 +2,46 @@
 
 :root {
   --nav-h: 88px;
+
+  /* Motion easing — emil-grade strong curves. The built-in CSS easings are too
+     weak; these carry the intentional "settle" that makes motion feel designed.
+     Used by Button, IndexRow, and any CSS transition that wants premium feel. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);       /* entrances, responsive UI */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);   /* on-screen movement / morph */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);    /* iOS drawer feel */
 }
 @media (min-width: 768px) {
   :root { --nav-h: 100px; }
 }
 
 @theme {
-  /* CanPlus Immigration — palette drawn from the logo's deepest maple tones:
-     a deep Canadian crimson, near-pure black ink, clean white field. No gold,
-     no navy — a confident crimson/black/white system rooted in the brand mark. */
-  --color-accent: #b11226;          /* deep maple crimson — primary brand field */
-  --color-accent-hover: #8f0e1f;    /* darker crimson on hover */
-  --color-accent-strong: #c41429;   /* live crimson — links, marks, active bars */
-  --color-accent-deep: #7c0a12;     /* garnet shadow tone from the leaf, for depth */
-  --color-accent-ink: #ffffff;      /* pure white on crimson fields */
+  /* CanPlus Immigration — LUXURY burgundy/oxblood on warm ivory.
+     A restrained, expensive system inspired by premium fintech (Wealthsimple):
+     a deep garnet-burgundy as the primary field, a single live crimson reserved
+     as a TINY accent (links, active bars, marks), warm near-black ink on a warm
+     ivory canvas. The luxury comes from depth, warmth, and generous whitespace —
+     red is used sparingly, never loud. */
+  --color-accent: #6b1f2a;          /* deep burgundy — primary brand field */
+  --color-accent-hover: #571521;    /* darker oxblood on hover */
+  --color-accent-strong: #b11226;   /* live crimson — TINY accent only: links, active bars, marks */
+  --color-accent-deep: #44111a;     /* near-black oxblood — depth, scrims, vignettes */
+  --color-accent-ink: #f7f3ec;      /* warm ivory text on burgundy fields */
+  --color-accent-tint: #f1e7e2;     /* faint burgundy wash for soft surfaces */
+  --color-accent-line: #e6d4ce;     /* warm burgundy-tinted hairline */
 
-  /* Semantic meter tones (eligibility score tiers) — not brand colors. */
-  --color-gold: #b7791f;            /* amber — "moderate" tier */
-  --color-gold-soft: #c8922e;       /* soft amber — "competitive" tier */
+  /* Semantic meter tones (eligibility score tiers) — refined brass, not brand. */
+  --color-gold: #9a6b1c;            /* refined brass — "moderate" tier */
+  --color-gold-soft: #b48638;       /* soft brass — "competitive" tier */
 
-  --color-ink: #121110;             /* near-pure black, matches the wordmark */
-  --color-ink-soft: #2c2a28;
-  --color-ink-muted: #6b6862;
-  --color-surface-dark: #121110;    /* dark sections use the logo's true black */
-  --color-surface-dark-2: #211f1d;
-  --color-bg: #fcfcfb;              /* clean near-white, matches the logo field */
-  --color-card: #ffffff;
-  --color-line: #e9e8e4;
-  --color-line-dark: #322f2c;
+  --color-ink: #17120f;             /* warm near-black, matches the wordmark */
+  --color-ink-soft: #2c2521;
+  --color-ink-muted: #6e655c;       /* warm muted */
+  --color-surface-dark: #17120f;    /* dark sections — warm espresso black */
+  --color-surface-dark-2: #241c17;
+  --color-bg: #f6f2ec;              /* warm ivory canvas — the luxury cue */
+  --color-card: #fffdf9;            /* warm white card, gently lifted from bg */
+  --color-line: #e5ddd1;            /* warm hairline */
+  --color-line-dark: #342c25;
 
   /* Flat editorial: minimal radii, the system relies on rules + fields. */
   --radius-card: 4px;
@@ -40,8 +52,10 @@
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", monospace;
 
-  --shadow-card: 0 1px 0 rgba(18, 17, 16, 0.04);
-  --shadow-tile: 0 1px 0 rgba(18, 17, 16, 0.05), 0 18px 40px -32px rgba(18, 17, 16, 0.18);
+  /* Warm, soft elevation — expensive depth instead of a flat 1px line. */
+  --shadow-card: 0 1px 0 rgba(23, 18, 15, 0.04), 0 14px 34px -26px rgba(23, 18, 15, 0.22);
+  --shadow-tile: 0 1px 0 rgba(23, 18, 15, 0.05), 0 30px 64px -42px rgba(23, 18, 15, 0.32);
+  --shadow-lift: 0 16px 40px -22px rgba(68, 17, 26, 0.45); /* burgundy-tinted, for primary CTAs */
 }
 
 @layer base {
@@ -54,10 +68,27 @@
   }
 
   body {
-    background: var(--color-bg);
+    /* warm ivory canvas with a faint top-light — premium, calm, not flat */
+    background:
+      radial-gradient(135% 75% at 50% -12%, #faf7f1 0%, rgba(250, 247, 241, 0) 58%),
+      var(--color-bg);
+    background-attachment: fixed;
     color: var(--color-ink);
     font-family: var(--font-sans);
     line-height: 1.6;
+  }
+
+  /* Faint paper grain over the ivory canvas — luxury texture, no perf cost.
+     Sits behind all content (negative z) so opaque sections simply cover it. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
   }
 
   ::selection {
@@ -70,7 +101,11 @@
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 0.98;
-    color: var(--color-ink);
+    /* Inherit the section's text color so headings stay legible on inverted
+       (burgundy / espresso) fields — defaults to ink on the light canvas. */
+    color: inherit;
+    font-feature-settings: "ss01", "kern", "liga";
+    text-wrap: balance;
   }
 
   /* Hide native focus ring on mouse, keep for keyboard */
@@ -129,24 +164,55 @@
     padding-bottom: 0.02em;
   }
 
+  /* Maple underline that DRAWS in left-to-right once revealed. The hero adds
+     `data-drawn` after its entrance so the stroke wipes on, not just appears.
+     Uses background-size (composited) — no layout, honours reduced-motion. */
+  .draw-underline {
+    background-image: linear-gradient(var(--color-accent-strong), var(--color-accent-strong));
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    background-size: 0% 0.1em;
+    padding-bottom: 0.04em;
+    transition: background-size 0.7s var(--ease-out);
+  }
+  .draw-underline[data-drawn="true"] { background-size: 100% 0.1em; }
+
+  /* Inline text link with an underline that draws from the left on hover. The
+     signature link treatment for body / footer / nav text links. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.3s var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .link-underline:hover { background-size: 100% 1px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .draw-underline { background-size: 100% 0.1em; transition: none; }
+    .link-underline { transition: none; }
+  }
+
   /* Fluid display type — one scale used by every page hero / section head,
      so headings stay consistent and scale smoothly across breakpoints. */
   .display-hero {
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.03em;
-    line-height: 0.98;
-    font-size: clamp(2.5rem, 1.45rem + 5.2vw, 5rem);   /* 40px → 80px */
+    line-height: 1.0;
+    font-size: clamp(2.25rem, 1.6rem + 3.1vw, 4rem);    /* 36px → 64px */
   }
   .display-section {
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.02em;
-    line-height: 1.0;
-    font-size: clamp(1.875rem, 1.2rem + 3.4vw, 3.5rem); /* 30px → 56px */
+    line-height: 1.04;
+    font-size: clamp(1.625rem, 1.25rem + 1.85vw, 2.625rem); /* 26px → 42px */
   }
   .lede {
-    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem); /* 17px → 20px */
+    font-size: clamp(1rem, 0.97rem + 0.18vw, 1.125rem); /* 16px → 18px */
     line-height: 1.6;
   }
 }

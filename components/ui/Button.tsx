@@ -6,21 +6,28 @@ type Variant = "primary" | "dark" | "ghost" | "outline" | "link";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "group inline-flex items-center justify-center gap-2 rounded-[3px] font-medium transition-colors duration-200 select-none whitespace-nowrap";
+  "group inline-flex items-center justify-center gap-2 rounded-[3px] font-medium select-none whitespace-nowrap " +
+  "transition-[transform,background-color,box-shadow,color,border-color] duration-200 [transition-timing-function:var(--ease-out)] " +
+  // Tactile press: lift on hover, scale down on press so the button feels heard.
+  "motion-safe:hover:-translate-y-px motion-safe:active:translate-y-0 motion-safe:active:scale-[0.97] motion-reduce:transform-none " +
+  // Any icon in the label nudges forward on hover — one consistent micro-interaction.
+  "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg]:[transition-timing-function:var(--ease-out)] motion-safe:hover:[&_svg]:translate-x-0.5";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-accent text-accent-ink hover:bg-accent-hover",
-  dark: "bg-surface-dark text-bg hover:bg-surface-dark-2",
+  // Premium primary: burgundy field with a soft burgundy-tinted lift on hover.
+  primary:
+    "bg-accent text-accent-ink shadow-[var(--shadow-lift)] hover:bg-accent-hover hover:shadow-[0_22px_50px_-20px_rgba(68,17,26,0.55)]",
+  dark: "bg-surface-dark text-bg shadow-[var(--shadow-card)] hover:bg-surface-dark-2",
   ghost: "bg-transparent text-ink hover:bg-ink/5",
-  outline: "border border-ink/20 bg-transparent text-ink hover:bg-ink/[0.04]",
+  outline: "border border-ink/15 bg-transparent text-ink hover:border-ink/25 hover:bg-ink/[0.03]",
   // Text link with an underline that draws in on hover.
   link: "!rounded-none !px-0 !h-auto bg-transparent text-accent-strong [box-shadow:inset_0_-1px_0_color-mix(in_srgb,var(--color-accent-strong)_30%,transparent)] hover:[box-shadow:inset_0_-2px_0_var(--color-accent-strong)]",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-11 px-4 text-sm",
-  md: "h-11 px-5 text-[15px]",
-  lg: "h-12 px-6 text-base",
+  sm: "h-11 px-5 text-sm",
+  md: "h-12 px-6 text-[15px]",
+  lg: "h-[3.25rem] px-7 text-base",
 };
 
 type CommonProps = {
